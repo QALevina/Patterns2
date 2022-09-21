@@ -40,24 +40,13 @@ class AuthTest {
     }
 
     @Test
-    @DisplayName("Should successfully login with active registered user")
-    void IfRegisteredAndActiveUser() {
-        var registeredUser = getRegisteredUser("active");
-        $x("//input[contains(@name,'login')]").setValue(registeredUser.getLogin());
-        $x("//input[contains(@name,'password')]").setValue(registeredUser.getPassword());
-        $x("//button[contains(@data-test-id,'action-login')]").click();
-        $x("//div[@class='notification__title']").shouldHave(Condition.text("Личный кабинет"));
-
-    }
-
-    @Test
     @DisplayName("Should get error message if login with not registered user")
     void shouldGetErrorIfNotRegisteredUser() {
         var notRegisteredUser = getUser("active");
         $x("//input[contains(@name,'login')]").setValue(notRegisteredUser.getLogin());
         $x("//input[contains(@name,'password')]").setValue(notRegisteredUser.getPassword());
         $x("//button[contains(@data-test-id,'action-login')]").click();
-        $x("//div[@class='notification__content']").shouldHave(Condition.text("Ошибка! " + "Неверно указан логин или пароль"));
+        $x("//div[@class='notification__content']").shouldHave(Condition.text("Ошибка! " + "Неверно указан логин или пароль");
 
     }
 
@@ -68,7 +57,7 @@ class AuthTest {
         $x("//input[contains(@name,'login')]").setValue(blockedUser.getLogin());
         $x("//input[contains(@name,'password')]").setValue(blockedUser.getPassword());
         $x("//button[contains(@data-test-id,'action-login')]").click();
-        $x("//div[@class='notification__title']").shouldHave(Condition.text("Ошибка! Пользователь заблокирован"));
+        $x("//div[@class='notification__content']").shouldHave(Condition.text("Ошибка! " + "Неверно указан логин или пароль"));
 
     }
 
@@ -80,7 +69,7 @@ class AuthTest {
         $x("//input[contains(@name,'login')]").setValue((wrongLogin));
         $x("//input[contains(@name,'password')]").setValue(registeredUser.getPassword());
         $x("//button[contains(@data-test-id,'action-login')]").click();
-        $x("//div[@class='notification__title']").shouldHave(Condition.text("Ошибка! Неверно указан логин или пароль"));
+        $x("//div[@class='notification__content']").shouldHave(Condition.text("Ошибка! " + "Неверно указан логин или пароль"));
 
     }
 
@@ -92,7 +81,7 @@ class AuthTest {
         $x("//input[contains(@name,'login')]").setValue((registeredUser.getLogin()));
         $x("//input[contains(@name,'password')]").setValue(wrongPassword);
         $x("//button[contains(@data-test-id,'action-login')]").click();
-        $x("//div[@class='notification__title']").shouldHave(Condition.text("Ошибка! Неверно указан логин или пароль"));
+        $x("//div[@class='notification__content']").shouldHave(Condition.text("Ошибка! " + "Неверно указан логин или пароль"));
 
     }
 }
