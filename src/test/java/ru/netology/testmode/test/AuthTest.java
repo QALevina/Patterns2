@@ -9,10 +9,8 @@ import ru.netology.testmode.data.DataGenerator;
 
 import java.time.Duration;
 
-import static com.codeborne.selenide.Selenide.$x;
-import static com.codeborne.selenide.Selenide.open;
-import static ru.netology.testmode.data.DataGenerator.Registration.getRegisteredUser;
-import static ru.netology.testmode.data.DataGenerator.Registration.getUser;
+import static com.codeborne.selenide.Selenide.*;
+import static ru.netology.testmode.data.DataGenerator.Registration.*;
 import static ru.netology.testmode.data.DataGenerator.getRandomLogin;
 import static ru.netology.testmode.data.DataGenerator.getRandomPassword;
 
@@ -30,7 +28,7 @@ class AuthTest {
 
     void shouldSuccessfulLoginIfRegisteredActiveUser() {
 
-        var registeredUser = getRegisteredUser("active");
+        var registeredUser = getUser("active");
 
         $x("//input[contains(@name,'login')]").setValue(registeredUser.getLogin());
         $x("//input[contains(@name,'password')]").setValue(registeredUser.getPassword());
@@ -52,7 +50,7 @@ class AuthTest {
     @Test
     @DisplayName("Should get error message if login with blocked registered user")
     void shouldGetErrorIfBlockedUser() {
-        var blockedUser = getRegisteredUser("blocked");
+        var blockedUser = getUser("blocked");
         $x("//input[contains(@name,'login')]").setValue(blockedUser.getLogin());
         $x("//input[contains(@name,'password')]").setValue(blockedUser.getPassword());
         $x("//button[contains(@data-test-id,'action-login')]").click();
@@ -63,7 +61,7 @@ class AuthTest {
     @Test
     @DisplayName("If login is wrong - show a message")
     void shouldGetErrorIfWrongLogin() {
-        var registeredUser = getRegisteredUser("active");
+        var registeredUser = getUser("active");
         var wrongLogin = getRandomLogin();
         $x("//input[contains(@name,'login')]").setValue((wrongLogin));
         $x("//input[contains(@name,'password')]").setValue(registeredUser.getPassword());
@@ -75,7 +73,7 @@ class AuthTest {
     @Test
     @DisplayName("Should get error message if login with wrong password")
     void shouldGetErrorIfWrongPassword() {
-        var registeredUser = getRegisteredUser("active");
+        var registeredUser = getUser("active");
         var wrongPassword = getRandomPassword();
         $x("//input[contains(@name,'login')]").setValue((registeredUser.getLogin()));
         $x("//input[contains(@name,'password')]").setValue(wrongPassword);
