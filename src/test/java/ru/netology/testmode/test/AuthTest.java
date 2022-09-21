@@ -38,21 +38,32 @@ class AuthTest {
         $x("//div[@class='notification__title']").shouldHave(Condition.text("Личный кабинет"))
                 .shouldBe(Condition.visible, Duration.ofSeconds(15));
     }
+
+    @Test
+    @DisplayName("Should successfully login with active registered user")
+    void IfRegisteredAndActiveUser() {
+        var registeredUser = getRegisteredUser("active");
+        $x("//input[contains(@name,'login')]").setValue(registeredUser.getLogin());
+        $x("//input[contains(@name,'password')]").setValue(registeredUser.getPassword());
+        $x("//button[contains(@data-test-id,'action-login')]").click();
+        $x("//div[@class='notification__title']").shouldHave(Condition.text("Личный кабинет"));
+
+    }
+
     @Test
     @DisplayName("Should get error message if login with not registered user")
-    void IfNotRegisteredUser() {
+    void shouldGetErrorIfNotRegisteredUser() {
         var notRegisteredUser = getUser("active");
-
         $x("//input[contains(@name,'login')]").setValue(notRegisteredUser.getLogin());
         $x("//input[contains(@name,'password')]").setValue(notRegisteredUser.getPassword());
         $x("//button[contains(@data-test-id,'action-login')]").click();
-        $x("//div[@class='notification__title']").shouldHave(Condition.text("Ошибка! Неверно указан логин или пароль"));
+        $x("//div[@class='notification__content']").shouldHave(Condition.text("Ошибка! " + "Неверно указан логин или пароль"));
 
     }
 
     @Test
     @DisplayName("Should get error message if login with blocked registered user")
-    void IfBlockedUser() {
+    void shouldGetErrorIfBlockedUser() {
         var blockedUser = getRegisteredUser("blocked");
         $x("//input[contains(@name,'login')]").setValue(blockedUser.getLogin());
         $x("//input[contains(@name,'password')]").setValue(blockedUser.getPassword());
@@ -63,7 +74,7 @@ class AuthTest {
 
     @Test
     @DisplayName("If login is wrong - show a message")
-    void IfWrongLogin() {
+    void shouldGetErrorIfWrongLogin() {
         var registeredUser = getRegisteredUser("active");
         var wrongLogin = getRandomLogin();
         $x("//input[contains(@name,'login')]").setValue((wrongLogin));
@@ -75,7 +86,7 @@ class AuthTest {
 
     @Test
     @DisplayName("Should get error message if login with wrong password")
-    void IfWrongPassword() {
+    void shouldGetErrorIfWrongPassword() {
         var registeredUser = getRegisteredUser("active");
         var wrongPassword = getRandomPassword();
         $x("//input[contains(@name,'login')]").setValue((registeredUser.getLogin()));
@@ -85,4 +96,6 @@ class AuthTest {
 
     }
 }
+
+
 
