@@ -35,8 +35,7 @@ class AuthTest {
         $x("//input[contains(@name,'login')]").setValue(registeredUser.getLogin());
         $x("//input[contains(@name,'password')]").setValue(registeredUser.getPassword());
         $x("//button[contains(@data-test-id,'action-login')]").click();
-        $x("//div[@class='notification__title']").shouldHave(Condition.text("Личный кабинет"))
-                .shouldBe(Condition.visible, Duration.ofSeconds(15));
+        $x("//*[@id='root']").shouldHave(Condition.text("Личный кабинет"));
     }
 
     @Test
