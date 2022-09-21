@@ -35,48 +35,54 @@ class AuthTest {
         $x("//input[contains(@name,'login')]").setValue(registeredUser.getLogin());
         $x("//input[contains(@name,'password')]").setValue(registeredUser.getPassword());
         $x("//button[contains(@data-test-id,'action-login')]").click();
-        $x("//button[contains(@class,'notification__closer')]").shouldHave(Condition.text("О"))
+        $x("//div[@class='notification__title']").shouldHave(Condition.text("Личный кабинет"))
                 .shouldBe(Condition.visible, Duration.ofSeconds(15));
     }
-        // TODO: добавить логику теста, в рамках которого будет выполнена попытка входа в личный кабинет с учётными
-        //  данными зарегистрированного активного пользователя, для заполнения полей формы используйте
-        //  пользователя registeredUser
-
-
-
     @Test
     @DisplayName("Should get error message if login with not registered user")
-    void shouldGetErrorIfNotRegisteredUser() {
+    void IfNotRegisteredUser() {
         var notRegisteredUser = getUser("active");
-        // TODO: добавить логику теста в рамках которого будет выполнена попытка входа в личный кабинет
-        //  незарегистрированного пользователя, для заполнения полей формы используйте пользователя notRegisteredUser
+
+        $x("//input[contains(@name,'login')]").setValue(notRegisteredUser.getLogin());
+        $x("//input[contains(@name,'password')]").setValue(notRegisteredUser.getPassword());
+        $x("//button[contains(@data-test-id,'action-login')]").click();
+        $x("//div[@class='notification__title']").shouldHave(Condition.text("Ошибка! Неверно указан логин или пароль"));
+
     }
 
     @Test
     @DisplayName("Should get error message if login with blocked registered user")
-    void shouldGetErrorIfBlockedUser() {
+    void IfBlockedUser() {
         var blockedUser = getRegisteredUser("blocked");
-        // TODO: добавить логику теста в рамках которого будет выполнена попытка входа в личный кабинет,
-        //  заблокированного пользователя, для заполнения полей формы используйте пользователя blockedUser
+        $x("//input[contains(@name,'login')]").setValue(blockedUser.getLogin());
+        $x("//input[contains(@name,'password')]").setValue(blockedUser.getPassword());
+        $x("//button[contains(@data-test-id,'action-login')]").click();
+        $x("//div[@class='notification__title']").shouldHave(Condition.text("Ошибка! Пользователь заблокирован"));
+
     }
 
     @Test
-    @DisplayName("Should get error message if login with wrong login")
-    void shouldGetErrorIfWrongLogin() {
+    @DisplayName("If login is wrong - show a message")
+    void IfWrongLogin() {
         var registeredUser = getRegisteredUser("active");
         var wrongLogin = getRandomLogin();
-        // TODO: добавить логику теста в рамках которого будет выполнена попытка входа в личный кабинет с неверным
-        //  логином, для заполнения поля формы "Логин" используйте переменную wrongLogin,
-        //  "Пароль" - пользователя registeredUser
+        $x("//input[contains(@name,'login')]").setValue((wrongLogin));
+        $x("//input[contains(@name,'password')]").setValue(registeredUser.getPassword());
+        $x("//button[contains(@data-test-id,'action-login')]").click();
+        $x("//div[@class='notification__title']").shouldHave(Condition.text("Ошибка! Неверно указан логин или пароль"));
+
     }
 
     @Test
     @DisplayName("Should get error message if login with wrong password")
-    void shouldGetErrorIfWrongPassword() {
+    void IfWrongPassword() {
         var registeredUser = getRegisteredUser("active");
         var wrongPassword = getRandomPassword();
-        // TODO: добавить логику теста в рамках которого будет выполнена попытка входа в личный кабинет с неверным
-        //  паролем, для заполнения поля формы "Логин" используйте пользователя registeredUser,
-        //  "Пароль" - переменную wrongPassword
+        $x("//input[contains(@name,'login')]").setValue((registeredUser.getLogin()));
+        $x("//input[contains(@name,'password')]").setValue(wrongPassword);
+        $x("//button[contains(@data-test-id,'action-login')]").click();
+        $x("//div[@class='notification__title']").shouldHave(Condition.text("Ошибка! Неверно указан логин или пароль"));
+
     }
 }
+
