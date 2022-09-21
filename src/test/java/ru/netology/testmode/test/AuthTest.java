@@ -33,7 +33,7 @@ class AuthTest {
         $x("//input[contains(@name,'login')]").setValue(registeredUser.getLogin());
         $x("//input[contains(@name,'password')]").setValue(registeredUser.getPassword());
         $x("//button[contains(@data-test-id,'action-login')]").click();
-        $x("//*[@id='root']").shouldHave(Condition.text("Личный кабинет"));
+        $x("//*[@id='root']").shouldHave(Condition.text("Интернет Банк"));
     }
 
     @Test
